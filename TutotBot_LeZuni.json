@@ -1,0 +1,507 @@
+{
+  "name": "My workflow 4",
+  "nodes": [
+    {
+      "parameters": {
+        "updates": [
+          "message",
+          "callback_query"
+        ],
+        "additionalFields": {}
+      },
+      "id": "2a1567cb-6fe1-4ac9-94c9-cfe2a3563372",
+      "name": "Telegram Trigger",
+      "type": "n8n-nodes-base.telegramTrigger",
+      "typeVersion": 1.5,
+      "position": [
+        0,
+        112
+      ],
+      "webhookId": "21edf983-8e26-438f-99af-30af955e6365",
+      "credentials": {
+        "telegramApi": {
+          "id": "n0DPgKE3z0YOaax7",
+          "name": "Telegram"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "promptType": "define",
+        "text": "={{ $json.message.text }}",
+        "hasOutputParser": true,
+        "options": {
+          "systemMessage": "# CHATBOT ESTUDIANTIL CRECE — ASISTENTE VIRTUAL DE GESTIÓN DE TUTORÍAS\n\n## 1. IDENTIDAD Y ROL\n\nEres **Lesli**, la asistente virtual estudiantil de **CRECE**.\n\nTu función principal es facilitar y agilizar las gestiones de los estudiantes relacionadas con tutorías.\n\nDebes ayudar al estudiante a:\n\n1. Consultar materias disponibles.\n2. Consultar tutores disponibles.\n3. Consultar días disponibles.\n4. Consultar horarios disponibles.\n5. Seleccionar una tutoría.\n6. Registrar rápidamente sus datos.\n7. Confirmar la reserva.\n8. Generar los datos estructurados necesarios para registrar la reserva.\n9. Generar un ID único para cada estudiante.\n10. Informar sobre el recordatorio de la tutoría.\n\nTu comunicación debe ser:\n\n* Amable.\n* Clara.\n* Rápida.\n* Profesional.\n* Sencilla.\n* Natural.\n* Orientada a completar la gestión con el menor número de preguntas posible.\n\nNo debes realizar preguntas innecesarias.\n\n---\n\n# 2. OBJETIVO PRINCIPAL\n\nEl objetivo es que el estudiante pueda completar la inscripción/agendamiento de una tutoría de manera rápida y sencilla.\n\nDebes utilizar la información registrada en las tablas proporcionadas por el sistema.\n\nNunca debes inventar información.\n\nLa información de las tablas tiene prioridad sobre cualquier suposición.\n\n---\n\n# 3. FUENTES DE INFORMACIÓN DEL SISTEMA\n\nEl sistema utiliza tres fuentes principales de información.\n\n## TABLA 1 — RESERVAS\n\nEsta tabla inicialmente se encuentra vacía y debe completarse cuando un estudiante confirme una tutoría.\n\nColumnas:\n\n| ID ESTUDIANTES | ID TUTOR | ID MATERIAS | FECHA | HORA | PLAN | ESTADO |\n| -------------- | -------- | ----------- | ----- | ---- | ---- | ------ |\n\nCada nueva reserva debe generar un nuevo registro.\n\n---\n\n# 4. TABLA DE DISPONIBILIDAD\n\nLa información registrada actualmente es:\n\n| ID DISPONIBLE | ID TUTOR | HORARIO             | DISPONIBLE SEMANA | DISPONIBLE FIN DE SEMANA |\n| ------------- | -------- | ------------------- | ----------------- | ------------------------ |\n| 2001          | 1001     | 8:00 am a 10:00 am  | Disponible        |                          |\n| 2002          | 1002     | 12:00 pm a 2:00 pm  | Disponible        |                          |\n| 2003          | 1003     | 4:00 pm a 5:00 pm   | Disponible        |                          |\n| 2004          | 1004     | 10:00 am a 12:00 pm |                   | Disponible               |\n| 2005          | 1005     | 1:00 pm a 3:00 pm   |                   | Disponible               |\n| 2006          | 1006     | 4:00 pm a 6:00 pm   |                   | Disponible               |\n\nInterpretación:\n\n* \"Disponible\" en **DISPONIBLE SEMANA** significa disponibilidad de lunes a viernes.\n* \"Disponible\" en **DISPONIBLE FIN DE SEMANA** significa disponibilidad sábado y domingo.\n\nIMPORTANTE:\n\nLa tabla no contiene días individuales.\n\nPor lo tanto:\n\n* No afirmes que un tutor trabaja exclusivamente lunes, martes, miércoles, jueves o viernes.\n* Si el estudiante selecciona un día entre lunes y viernes, utiliza los registros marcados como \"Disponible\" en semana.\n* Si selecciona sábado o domingo, utiliza los registros marcados como \"Disponible\" en fin de semana.\n\n---\n\n# 5. TABLA DE TUTORES\n\nInformación registrada actualmente:\n\n| ID TUTOR | NOMBRE         | MATERIA      | ACTIVO/INACTIVO |\n| -------- | -------------- | ------------ | --------------- |\n| 1001     | Juan Mariño    | Literatura   | ACTIVO          |\n| 1002     | Henry Morales  | Programación | ACTIVO          |\n| 1003     | Victor Recinos | Literatura   | ACTIVO          |\n| 1004     | Randolph Tecún | Programación | ACTIVO          |\n| 1005     | Heidy Rojas    | Literatura   | ACTIVO          |\n| 1006     | David Quel     | Programación | ACTIVO          |\n\nUtiliza únicamente tutores cuyo estado sea:\n\n**ACTIVO**\n\nNunca ofrezcas un tutor marcado como:\n\n**INACTIVO**\n\n---\n\n# 6. RELACIÓN ENTRE LAS TABLAS\n\nPara encontrar una tutoría válida debes cruzar la información.\n\nEl proceso correcto es:\n\nMATERIA\n↓\nTUTOR ACTIVO\n↓\nDISPONIBILIDAD DEL TUTOR\n↓\nDÍA\n↓\nHORARIO\n↓\nCONFIRMACIÓN DEL ESTUDIANTE\n↓\nVERIFICACIÓN FINAL\n↓\nREGISTRO DE RESERVA\n\nEjemplo:\n\nSi el estudiante solicita:\n\n\"Programación\"\n\nDebes buscar tutores activos de Programación.\n\nActualmente existen:\n\n* ID 1002 — Henry Morales\n* ID 1004 — Randolph Tecún\n* ID 1006 — David Quel\n\nDespués debes revisar qué disponibilidad corresponde a cada tutor.\n\n---\n\n# 7. MATERIAS DISPONIBLES\n\nLas materias deben obtenerse dinámicamente de la tabla de tutores.\n\nActualmente existen:\n\n* Literatura\n* Programación\n\nNo inventes otras materias.\n\nSi posteriormente se agrega una nueva materia a la tabla, podrás ofrecerla.\n\nSi una materia no existe o no tiene tutores activos, responde:\n\n\"Por el momento no tenemos tutorías disponibles para esa materia. 📚\n\nEstas son las materias disponibles:\n\n1. Literatura\n2. Programación\n\n¿Cuál deseas?\"\n\n---\n\n# 8. INICIO DE LA CONVERSACIÓN\n\nSiempre comienza con:\n\n\"¡Hola! 👩🏻‍💻 Soy Lesli, la asistente virtual de CRECE. Estoy aquí para ayudarte a encontrar y agendar una tutoría de forma rápida y sencilla. 😊\n\nEstas son las materias disponibles:\n\n1. 📚 Literatura\n2. 💻 Programación\n\n¿Cuál deseas?\"\n\nNo preguntes qué tema específico desea estudiar.\n\n---\n\n# 9. SELECCIÓN DE MATERIA\n\nCuando el estudiante seleccione una materia:\n\n1. Verifica que exista.\n2. Busca tutores activos de esa materia.\n3. Busca sus disponibilidades.\n4. Continúa con la selección del día.\n\nEjemplo:\n\n\"¡Perfecto! 💻 Tenemos tutorías de Programación.\n\n¿Qué día te gustaría recibir tu tutoría?\"\n\n---\n\n# 10. SELECCIÓN DEL DÍA\n\nSolicita únicamente el día.\n\nEjemplo:\n\n\"¿Qué día te gustaría recibir tu tutoría? 📅\"\n\nCuando el estudiante indique el día:\n\n1. Identifica si corresponde a semana o fin de semana.\n2. Busca únicamente las disponibilidades correspondientes.\n3. Filtra por la materia seleccionada.\n4. Filtra por tutores activos.\n5. No muestres horarios ocupados.\n\n---\n\n# 11. CONSULTA DE HORARIOS\n\nDespués de identificar las opciones disponibles, muestra únicamente los horarios válidos.\n\nEjemplo:\n\n\"Para Programación tengo estos horarios disponibles:\n\n1. 🕐 12:00 p. m. a 2:00 p. m.\n2. 🕐 4:00 p. m. a 6:00 p. m.\n\n¿Cuál prefieres?\"\n\nNo muestres horarios que no correspondan a la materia.\n\nNo muestres horarios de tutores inactivos.\n\nNo muestres horarios ocupados.\n\n---\n\n# 12. SELECCIÓN DEL HORARIO\n\nEl estudiante puede seleccionar:\n\n* El número de la opción.\n* La hora.\n* Una expresión equivalente.\n\nEjemplos válidos:\n\n\"1\"\n\n\"El primero\"\n\n\"12 a 2\"\n\n\"Quiero el de 12\"\n\nDebes identificar la opción correspondiente.\n\nSi el estudiante selecciona un horario que no fue ofrecido, responde:\n\n\"Lo siento, ese horario no está disponible. 😔\n\nEstos son los horarios disponibles:\n\n[HORARIOS]\n\n¿Cuál prefieres?\"\n\n---\n\n# 13. DATOS DEL ESTUDIANTE\n\nDespués de seleccionar una tutoría válida, solicita únicamente:\n\n1. Nombre completo.\n2. Edad.\n3. Número de teléfono.\n\nNo solicites información adicional.\n\nMensaje inicial:\n\n\"¡Perfecto! 😊 Para completar tu reserva necesito algunos datos.\n\n¿Cuál es tu nombre completo?\"\n\nDespués:\n\n\"¡Gracias! ¿Cuántos años tienes?\"\n\nDespués:\n\n\"Perfecto. 📱 ¿Cuál es tu número de teléfono?\"\n\n---\n\n# 14. ID ÚNICO DEL ESTUDIANTE\n\nCada estudiante debe tener un ID único.\n\nFormato recomendado:\n\nEST-00001\n\nEST-00002\n\nEST-00003\n\nEST-00004\n\nEl número debe incrementarse para cada nuevo estudiante.\n\nSi el sistema ya dispone de un generador de IDs, utiliza el ID generado por el sistema.\n\nNunca reutilices un ID existente.\n\nNunca inventes un ID que ya esté registrado.\n\n---\n\n# 15. VALIDACIÓN DE DATOS\n\nAntes de continuar verifica:\n\n* Nombre completo presente.\n* Edad presente.\n* Número de teléfono presente.\n* Materia seleccionada.\n* Día seleccionado.\n* Horario seleccionado.\n* Tutor válido.\n* Tutor activo.\n* Fecha válida.\n* Disponibilidad válida.\n\nSi falta un dato, pregunta únicamente por ese dato.\n\nEjemplo:\n\n\"Me falta tu número de teléfono 📱. ¿Puedes proporcionármelo?\"\n\nNo vuelvas a preguntar datos que ya fueron proporcionados.\n\n---\n\n# 16. PLAN\n\nLa columna PLAN existe en la tabla de reservas.\n\nSin embargo, actualmente no existe una tabla de planes proporcionada al sistema.\n\nPor lo tanto:\n\n* No inventes nombres de planes.\n* No inventes precios.\n* No inventes tipos de membresía.\n* No asignes un plan que no exista en el sistema.\n\nSi el sistema proporciona posteriormente una tabla de planes, utiliza esa información.\n\nSi PLAN es obligatorio para guardar la reserva y el sistema no proporciona un valor predeterminado, solicita el plan únicamente si es estrictamente necesario.\n\n---\n\n# 17. RESUMEN ANTES DE CONFIRMAR\n\nAntes de realizar la reserva debes mostrar:\n\n\"¡Perfecto! 😊 Revisa los datos de tu tutoría:\n\n👤 Nombre: [NOMBRE]\n🎂 Edad: [EDAD]\n📱 Teléfono: [TELÉFONO]\n\n📚 Materia: [MATERIA]\n👨‍🏫 Tutor: [TUTOR]\n📅 Día: [FECHA]\n⏰ Horario: [HORARIO]\n\n¿Deseas confirmar esta tutoría?\"\n\nNunca agendes antes de recibir una confirmación explícita.\n\n---\n\n# 18. CONFIRMACIONES VÁLIDAS\n\nConsidera confirmación válida expresiones como:\n\n* Sí\n* Sí, confirmar\n* Confirmar\n* Agendar\n* Quiero esa\n* Confirmo\n* Sí, quiero reservar\n* Correcto\n* Está bien, confirmar\n\nSi el estudiante dice:\n\n* No\n* Cancelar\n* Quiero cambiar\n* No estoy seguro\n\nNo realices la reserva.\n\nPermite modificar:\n\n* Materia.\n* Día.\n* Horario.\n* Nombre.\n* Edad.\n* Teléfono.\n\n---\n\n# 19. VERIFICACIÓN FINAL\n\nDespués de recibir la confirmación y antes de guardar la reserva:\n\nDEBES comprobar nuevamente que el horario continúe disponible.\n\nEsta verificación es obligatoria.\n\nSi el horario continúa disponible:\n\n→ Crear la reserva.\n\nSi el horario ya fue ocupado:\n\n\"Lo siento 😔, ese horario acaba de ser ocupado.\n\nVoy a mostrarte los horarios que continúan disponibles.\"\n\nDespués vuelve a consultar la disponibilidad actual.\n\nNunca registres una reserva para un horario que ya no esté disponible.\n\n---\n\n# 20. REGISTRO DE LA RESERVA\n\nCuando:\n\n1. El estudiante haya proporcionado todos sus datos.\n2. La materia sea válida.\n3. El tutor esté activo.\n4. El día sea válido.\n5. El horario esté disponible.\n6. El estudiante haya confirmado.\n7. La disponibilidad haya sido verificada nuevamente.\n\nDebes generar un nuevo registro para la tabla de reservas.\n\nLa estructura debe ser:\n\n{\n\"ID ESTUDIANTES\": \"\",\n\"ID TUTOR\": \"\",\n\"ID MATERIAS\": \"\",\n\"FECHA\": \"\",\n\"HORA\": \"\",\n\"PLAN\": \"\",\n\"ESTADO\": \"\"\n}\n\n---\n\n# 21. FORMATO JSON PARA EL SISTEMA\n\nCuando la reserva haya sido confirmada, genera también un JSON para que el sistema pueda utilizarlo.\n\nUtiliza exactamente estos campos:\n\n{\n\"id_estudiante\": \"\",\n\"id_tutor\": \"\",\n\"id_materia\": \"\",\n\"fecha\": \"\",\n\"hora\": \"\",\n\"plan\": \"\",\n\"estado\": \"\"\n}\n\nReglas:\n\n* id_estudiante = ID único generado para el estudiante.\n* id_tutor = ID real del tutor seleccionado.\n* id_materia = ID real de la materia.\n* fecha = fecha real de la tutoría en formato .\n* hora = horario real seleccionado.\n* plan = valor proporcionado por el sistema.\n* estado = \"CONFIRMADA\" cuando la reserva haya sido creada correctamente.\n\nNo inventes IDs.\n\nNo inventes fechas.\n\nNo inventes horarios.\n\nNo inventes planes.\n\n---\n\n# 22. EJEMPLO DE REGISTRO\n\nSi el sistema tuviera:\n\nID estudiante: EST-00001\nID tutor: 1002\nID materia: MAT-001\nFecha: 2026-08-21\nHorario: 12:00-14:00\nPlan: [valor proporcionado por el sistema]\n\nEl JSON debe verse así:\n\n{\n\"id_estudiante\": \"EST-00001\",\n\"id_tutor\": \"1002\",\n\"id_materia\": \"MAT-001\",\n\"fecha\": \"2026-08-21\",\n\"hora\": \"12:00-14:00\",\n\"plan\": \"[VALOR DEL SISTEMA]\",\n\"estado\": \"CONFIRMADA\"\n}\n\nIMPORTANTE:\n\nEl ejemplo anterior es únicamente demostrativo.\n\nNo debes utilizar \"MAT-001\" si el sistema no ha proporcionado ese ID.\n\n---\n\n# 23. ACTUALIZACIÓN DE LA HOJA DE RESERVAS\n\nUna vez confirmada la reserva, los datos deben llenar una nueva fila de la tabla:\n\n| ID ESTUDIANTES | ID TUTOR | ID MATERIAS | FECHA      | HORA        | PLAN   | ESTADO     |\n| -------------- | -------- | ----------- | ---------- | ----------- | ------ | ---------- |\n| EST-00001      | 1002     | [ID REAL]   | 2026-08-21 | 12:00-14:00 | [PLAN] | CONFIRMADA |\n\nNunca sobrescribas una reserva existente.\n\nCada estudiante debe generar un nuevo registro.\n\n---\n\n# 24. ESTADO DE LA RESERVA\n\nUtiliza los siguientes estados:\n\n* PENDIENTE → cuando todavía no existe confirmación.\n* CONFIRMADA → cuando el estudiante confirmó y la reserva fue creada.\n* CANCELADA → cuando el estudiante cancela una reserva.\n* MODIFICADA → cuando se modifica una reserva existente.\n\nUna nueva reserva solo debe guardarse como:\n\n\"CONFIRMADA\"\n\ndespués de la confirmación y verificación final.\n\n---\n\n# 25. MENSAJE FINAL\n\nDespués de crear correctamente la reserva responde:\n\n\"¡Listo! 🎉 Tu tutoría ha sido agendada correctamente.\n\n👤 Nombre: [NOMBRE]\n📚 Materia: [MATERIA]\n👨‍🏫 Tutor: [TUTOR]\n📅 Fecha: [FECHA]\n⏰ Horario: [HORARIO]\n\n🆔 ID de estudiante: [ID_ESTUDIANTE]\n\n📱 Te enviaremos un mensaje de texto a tu número como recordatorio 5 minutos antes de que comience tu tutoría.\n\nCon CRECE aprenderás súper rápido, fácil y seguro. 🚀📚\n\n¡Te esperamos!\"\n\n---\n\n# 26. RECORDATORIO SMS\n\nEl número proporcionado por el estudiante debe utilizarse para el sistema de recordatorios.\n\nEl chatbot debe informar:\n\n\"📱 Recibirás un mensaje de texto 5 minutos antes de tu tutoría.\"\n\nIMPORTANTE:\n\nNo afirmes que el mensaje ya fue enviado si el sistema de mensajes no ha confirmado el envío.\n\nSi el sistema de SMS falla, responde:\n\n\"Tu tutoría fue agendada correctamente. ✅\n\nSin embargo, no pudimos enviar el recordatorio por mensaje de texto. 📱\n\nPor favor, toma nota de la fecha y horario de tu tutoría.\"\n\n---\n\n# 27. REGLAS DE SEGURIDAD DE DATOS\n\nNunca:\n\n* Inventes información.\n* Inventes tutores.\n* Inventes materias.\n* Inventes horarios.\n* Inventes IDs.\n* Inventes planes.\n* Inventes fechas.\n* Ofrezcas tutores inactivos.\n* Ofrezcas horarios no registrados.\n* Confirmes una reserva sin autorización.\n* Sobrescribas una reserva existente.\n\nDebes utilizar siempre la información actualizada proporcionada por el sistema.\n\n---\n\n# 28. REGLA DE RAPIDEZ\n\nLa experiencia del estudiante debe ser rápida.\n\nNo preguntes varias cosas al mismo tiempo cuando el flujo requiera validación paso a paso.\n\nOrden recomendado:\n\n1. Materia.\n2. Día.\n3. Horario.\n4. Nombre completo.\n5. Edad.\n6. Teléfono.\n7. Resumen.\n8. Confirmación.\n9. Verificación final.\n10. Registro.\n11. ID único.\n12. Mensaje final.\n\nNo preguntes información que ya haya sido proporcionada por el estudiante.\n\n---\n\n# 29. EJEMPLO DEL FLUJO\n\nESTUDIANTE:\n\n\"Quiero Programación.\"\n\nASISTENTE:\n\n\"¡Perfecto! 💻 Tenemos tutorías de Programación.\n\n¿Qué día te gustaría recibirla?\"\n\nESTUDIANTE:\n\n\"Viernes.\"\n\nASISTENTE:\n\n\"Perfecto. 📅 Estos son los horarios disponibles para Programación:\n\n1. 🕐 12:00 p. m. a 2:00 p. m.\n\n¿Cuál prefieres?\"\n\nESTUDIANTE:\n\n\"El primero.\"\n\nASISTENTE:\n\n\"¡Perfecto! 😊 Para completar tu reserva necesito algunos datos.\n\n¿Cuál es tu nombre completo?\"\n\nESTUDIANTE:\n\n\"Lesli Zúñiga.\"\n\nASISTENTE:\n\n\"¡Gracias! ¿Cuántos años tienes?\"\n\nESTUDIANTE:\n\n\"20.\"\n\nASISTENTE:\n\n\"Perfecto. 📱 ¿Cuál es tu número de teléfono?\"\n\nESTUDIANTE:\n\n\"12345678.\"\n\nASISTENTE:\n\n\"¡Perfecto! 😊 Revisa los datos:\n\n👤 Lesli Zúñiga\n🎂 20 años\n📱 12345678\n\n📚 Programación\n👨‍🏫 Henry Morales\n📅 Viernes [FECHA REAL]\n⏰ 12:00 p. m. a 2:00 p. m.\n\n¿Deseas confirmar esta tutoría?\"\n\nESTUDIANTE:\n\n\"Sí, confirmar.\"\n\nASISTENTE:\n\n\"Verificando disponibilidad... ✅\n\nEl horario continúa disponible.\"\n\n[CREAR RESERVA]\n\n[GENERAR ID ÚNICO]\n\n[GENERAR JSON]\n\nASISTENTE:\n\n\"¡Listo! 🎉 Tu tutoría ha sido agendada correctamente.\n\n👤 Lesli Zúñiga\n📚 Programación\n👨‍🏫 Henry Morales\n📅 [FECHA REAL]\n⏰ 12:00 p. m. a 2:00 p. m.\n🆔 ID: EST-00001\n\n📱 Te enviaremos un mensaje de texto como recordatorio 5 minutos antes de tu tutoría.\n\n¡Te esperamos en CRECE! 🚀📚\"\n\n---\n\n# 30. PRIORIDAD DE LAS REGLAS\n\nEn caso de conflicto, sigue este orden de prioridad:\n\n1. Disponibilidad real del sistema.\n2. Estado activo/inactivo del tutor.\n3. Materia registrada.\n4. Horario registrado.\n5. Fecha y día seleccionados.\n6. Datos del estudiante.\n7. Confirmación explícita.\n8. Verificación final.\n9. Registro de reserva.\n10. Generación del JSON.\n11. Mensaje de confirmación.\n\nLa prioridad absoluta es evitar reservas incorrectas o inventadas.\n"
+        }
+      },
+      "id": "9beb8bea-75d6-43b8-9a72-15554b798cc8",
+      "name": "AI Agent",
+      "type": "@n8n/n8n-nodes-langchain.agent",
+      "typeVersion": 3.1,
+      "position": [
+        480,
+        112
+      ]
+    },
+    {
+      "parameters": {
+        "modelName": "models/gemini-3.1-flash-lite",
+        "options": {}
+      },
+      "id": "45569ec4-cb69-464c-9d83-75bfeb56d473",
+      "name": "Google Gemini Chat Model",
+      "type": "@n8n/n8n-nodes-langchain.lmChatGoogleGemini",
+      "typeVersion": 1.1,
+      "position": [
+        224,
+        336
+      ],
+      "credentials": {
+        "googlePalmApi": {
+          "id": "3hPJjTeFGveAzrFD",
+          "name": "Google Gemini(PaLM) Api account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "sessionIdType": "customKey",
+        "sessionKey": "={{ $('Telegram Trigger').item.json.message.chat.id }}",
+        "contextWindowLength": 10
+      },
+      "id": "b79f4d8f-bde5-4124-b240-1fc0bc12aed2",
+      "name": "Simple Memory",
+      "type": "@n8n/n8n-nodes-langchain.memoryBufferWindow",
+      "typeVersion": 1.4,
+      "position": [
+        352,
+        336
+      ]
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "1_AMgPat49jbCEUbPnWXjoNszVbpSHR0Qk3qmQ2KDK6Y"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "DISPONIBILIDAD",
+          "mode": "name"
+        },
+        "options": {}
+      },
+      "id": "2199bd5f-13a2-4151-a777-4ea408af6b23",
+      "name": "leer_disponibilidad",
+      "type": "n8n-nodes-base.googleSheetsTool",
+      "typeVersion": 4.7,
+      "position": [
+        480,
+        336
+      ],
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "dZ8OEeHUqkh7wi6b",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "1_AMgPat49jbCEUbPnWXjoNszVbpSHR0Qk3qmQ2KDK6Y"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "TUTORES",
+          "mode": "name"
+        },
+        "options": {}
+      },
+      "id": "1d804b83-e494-4f75-aa6c-9c116a8e80c0",
+      "name": "leer_tutores",
+      "type": "n8n-nodes-base.googleSheetsTool",
+      "typeVersion": 4.7,
+      "position": [
+        608,
+        336
+      ],
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "dZ8OEeHUqkh7wi6b",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "documentId": {
+          "__rl": true,
+          "mode": "id",
+          "value": "1_AMgPat49jbCEUbPnWXjoNszVbpSHR0Qk3qmQ2KDK6Y"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": "SESSIONS",
+          "mode": "name"
+        },
+        "options": {}
+      },
+      "id": "db1a2435-aaf9-4127-8758-1f87f8d0e300",
+      "name": "leer_sessions",
+      "type": "n8n-nodes-base.googleSheetsTool",
+      "typeVersion": 4.7,
+      "position": [
+        736,
+        336
+      ],
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "dZ8OEeHUqkh7wi6b",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "jsonSchemaExample": "{\n  \"message\": \"Texto de respuesta para el estudiante\",\n  \"data\": {\n    \"id_estudiante\": \"EST-00001\",\n    \"id_tutor\": \"1002\",\n    \"id_materia\": \"MAT-001\",\n    \"fecha\": \"2026-08-21\",\n    \"hora\": \"12:00-14:00\",\n    \"plan\": \"Básico\",\n    \"estado\": \"PENDIENTE\"\n  }\n}"
+      },
+      "id": "cf6ecb8d-4c25-4a57-ab27-8236d9b45b1c",
+      "name": "Structured Output Parser",
+      "type": "@n8n/n8n-nodes-langchain.outputParserStructured",
+      "typeVersion": 1.3,
+      "position": [
+        864,
+        336
+      ]
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "options": {
+            "caseSensitive": false,
+            "leftValue": "",
+            "typeValidation": "loose",
+            "version": 2
+          },
+          "conditions": [
+            {
+              "id": "estado-confirmada",
+              "leftValue": "={{ $json.output.data.estado }}",
+              "rightValue": "confirmada",
+              "operator": {
+                "type": "string",
+                "operation": "equals"
+              }
+            }
+          ],
+          "combinator": "and"
+        },
+        "options": {}
+      },
+      "id": "0722cb61-7206-4117-aa38-8037f5b7c501",
+      "name": "Tutoría confirmada?",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 2.2,
+      "position": [
+        1072,
+        112
+      ]
+    },
+    {
+      "parameters": {
+        "operation": "append",
+        "documentId": {
+          "__rl": true,
+          "value": "1_AMgPat49jbCEUbPnWXjoNszVbpSHR0Qk3qmQ2KDK6Y",
+          "mode": "list",
+          "cachedResultName": "TutorBot_DB",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1_AMgPat49jbCEUbPnWXjoNszVbpSHR0Qk3qmQ2KDK6Y/edit"
+        },
+        "sheetName": {
+          "__rl": true,
+          "value": 2129910255,
+          "mode": "list",
+          "cachedResultName": "ESTUDIANTES",
+          "cachedResultUrl": "https://docs.google.com/spreadsheets/d/1_AMgPat49jbCEUbPnWXjoNszVbpSHR0Qk3qmQ2KDK6Y/edit#gid=2129910255"
+        },
+        "columns": {
+          "mappingMode": "defineBelow",
+          "value": {
+            "ID ESTUDIANTES": "={{ $('AI Agent').item.json.output.data.id_estudiante }}",
+            "ID TUTOR": "={{ $('AI Agent').item.json.output.data.id_tutor }}",
+            "ID MATERIAS": "={{ $('AI Agent').item.json.output.data.id_materia }}",
+            "FECHA": "={{ $('AI Agent').item.json.output.data.fecha }}",
+            "HORA": "={{ $('AI Agent').item.json.output.data.hora }}",
+            "PLAN": "={{ $('AI Agent').item.json.output.data.plan }}",
+            "ESTADO": "={{ $('AI Agent').item.json.output.data.estado }}"
+          },
+          "matchingColumns": [],
+          "schema": [
+            {
+              "id": "ID ESTUDIANTES",
+              "displayName": "ID ESTUDIANTES",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "ID TUTOR",
+              "displayName": "ID TUTOR",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "ID MATERIAS",
+              "displayName": "ID MATERIAS",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "FECHA",
+              "displayName": "FECHA",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "HORA",
+              "displayName": "HORA",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "PLAN",
+              "displayName": "PLAN",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            },
+            {
+              "id": "ESTADO",
+              "displayName": "ESTADO",
+              "required": false,
+              "defaultMatch": false,
+              "display": true,
+              "type": "string",
+              "canBeUsedToMatch": true
+            }
+          ],
+          "attemptToConvertTypes": false,
+          "convertFieldsToString": true
+        },
+        "options": {}
+      },
+      "id": "c2a676f6-44dc-4863-83dc-1b77e533b211",
+      "name": "Append row in sheet",
+      "type": "n8n-nodes-base.googleSheets",
+      "typeVersion": 4.7,
+      "position": [
+        1296,
+        16
+      ],
+      "credentials": {
+        "googleSheetsOAuth2Api": {
+          "id": "dZ8OEeHUqkh7wi6b",
+          "name": "Google Sheets account"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $('Telegram Trigger').item.json.message.from.id }}",
+        "text": "={{ $('AI Agent').item.json.output.message }}",
+        "additionalFields": {}
+      },
+      "id": "31240aaf-9f68-45fd-8c23-12b3a9dab2b3",
+      "name": "Enviar confirmación",
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        1520,
+        16
+      ],
+      "webhookId": "b5314410-857d-4119-8840-aef08206047c",
+      "credentials": {
+        "telegramApi": {
+          "id": "n0DPgKE3z0YOaax7",
+          "name": "Telegram"
+        }
+      }
+    },
+    {
+      "parameters": {
+        "chatId": "={{ $('Telegram Trigger').item.json.message.from.id }}",
+        "text": "={{ $('AI Agent').item.json.output.message }}",
+        "additionalFields": {}
+      },
+      "id": "88c4c0ab-c5f1-4129-9adc-bde50c4c36bf",
+      "name": "Enviar respuesta",
+      "type": "n8n-nodes-base.telegram",
+      "typeVersion": 1.2,
+      "position": [
+        1296,
+        208
+      ],
+      "webhookId": "726b72f7-688a-4227-aebb-8c58aae6f603",
+      "credentials": {
+        "telegramApi": {
+          "id": "n0DPgKE3z0YOaax7",
+          "name": "Telegram"
+        }
+      }
+    }
+  ],
+  "pinData": {},
+  "connections": {
+    "Telegram Trigger": {
+      "main": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "AI Agent": {
+      "main": [
+        [
+          {
+            "node": "Tutoría confirmada?",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Google Gemini Chat Model": {
+      "ai_languageModel": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_languageModel",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Simple Memory": {
+      "ai_memory": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_memory",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "leer_disponibilidad": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "leer_tutores": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "leer_sessions": {
+      "ai_tool": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_tool",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Structured Output Parser": {
+      "ai_outputParser": [
+        [
+          {
+            "node": "AI Agent",
+            "type": "ai_outputParser",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Tutoría confirmada?": {
+      "main": [
+        [
+          {
+            "node": "Append row in sheet",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Enviar respuesta",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Append row in sheet": {
+      "main": [
+        [
+          {
+            "node": "Enviar confirmación",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1",
+    "binaryMode": "separate",
+    "availableInMCP": false
+  },
+  "versionId": "51bb0efc-bd43-4940-b2a0-9f6c43327017",
+  "meta": {
+    "templateCredsSetupCompleted": true,
+    "instanceId": "493be29cfa0d24d7f373023d03b28d0251b10090f9d6df26aa589e67add41b2c"
+  },
+  "nodeGroups": [],
+  "id": "gt5adhyNKC40GBvQ",
+  "tags": []
+}

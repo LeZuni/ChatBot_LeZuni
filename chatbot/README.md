@@ -1,6 +1,6 @@
 # 🤖 TutorBot CRECE
 
-Asistente virtual estudiantil desarrollado con **n8n**, **WhatsApp** y **Google Sheets**, diseñado para facilitar y agilizar el proceso de inscripción y agendamiento de tutorías para los estudiantes de CRECE.
+Asistente virtual estudiantil desarrollado con **n8n**, **WhatsApp** y **Google Sheets**, diseñado para facilitar y agilizar el proceso de inscripción y agendamiento de tutorías para los estudiantes.
 
 El chatbot permite al estudiante consultar materias, seleccionar un día y horario disponible, proporcionar sus datos personales, revisar la información de su tutoría y confirmar su reserva.
 
@@ -8,67 +8,44 @@ El chatbot permite al estudiante consultar materias, seleccionar un día y horar
 
 ## 📋 Índice
 
-- [🤖 TutorBot CRECE](#-tutorbot-crece)
-  - [📋 Índice](#-índice)
-- [📌 Descripción del proyecto](#-descripción-del-proyecto)
-- [🎯 Objetivo](#-objetivo)
-- [🛠️ Tecnologías utilizadas](#️-tecnologías-utilizadas)
-- [⚙️ Funcionamiento general](#️-funcionamiento-general)
-- [🔄 Flujo del chatbot](#-flujo-del-chatbot)
+- [Descripción del proyecto](#-descripción-del-proyecto)
+- [Objetivo](#-objetivo)
+- [Tecnologías utilizadas](#️-tecnologías-utilizadas)
+- [Funcionamiento general](#️-funcionamiento-general)
+- [Flujo del chatbot](#-flujo-del-chatbot)
   - [1. Saludo](#1-saludo)
   - [2. Selección de materia](#2-selección-de-materia)
   - [3. Selección del día](#3-selección-del-día)
   - [4. Selección del horario](#4-selección-del-horario)
-- [👤 Proceso de inscripción](#-proceso-de-inscripción)
-    - [Datos solicitados](#datos-solicitados)
-- [📋 Resumen de la tutoría](#-resumen-de-la-tutoría)
-- [✅ Confirmación de la tutoría](#-confirmación-de-la-tutoría)
-- [🔎 Verificación final](#-verificación-final)
-- [🆔 ID único del estudiante](#-id-único-del-estudiante)
-- [📱 Recordatorio](#-recordatorio)
-- [📊 Base de datos](#-base-de-datos)
-  - [👨‍🏫 Tabla de tutores](#-tabla-de-tutores)
-- [🕐 Tabla de disponibilidad](#-tabla-de-disponibilidad)
-- [📝 Tabla de reservas](#-tabla-de-reservas)
-- [📁 Estructura del proyecto](#-estructura-del-proyecto)
-- [🚀 Instalación y configuración](#-instalación-y-configuración)
+- [Proceso de inscripción](#-proceso-de-inscripción)
+  - [Datos solicitados](#datos-solicitados)
+- [Resumen de la tutoría](#-resumen-de-la-tutoría)
+- [Confirmación de la tutoría](#-confirmación-de-la-tutoría)
+- [Verificación final](#-verificación-final)
+- [ID único del estudiante](#-id-único-del-estudiante)
+- [Recordatorio](#-recordatorio)
+- [Base de datos](#-base-de-datos)
+  - [Tabla de tutores](#-tabla-de-tutores)
+  - [Tabla de disponibilidad](#-tabla-de-disponibilidad)
+  - [Tabla de reservas](#-tabla-de-reservas)
+- [Estructura del proyecto](#-estructura-del-proyecto)
+- [Instalación y configuración](#-instalación-y-configuración)
   - [1. Clonar el repositorio](#1-clonar-el-repositorio)
   - [2. Abrir n8n](#2-abrir-n8n)
   - [3. Configurar las credenciales](#3-configurar-las-credenciales)
-- [📥 Importación del flujo de n8n](#-importación-del-flujo-de-n8n)
-- [📊 Configuración de Google Sheets](#-configuración-de-google-sheets)
-    - [Hoja de tutores](#hoja-de-tutores)
-    - [Hoja de disponibilidad](#hoja-de-disponibilidad)
-    - [Hoja de reservas](#hoja-de-reservas)
-- [📱 Configuración de WhatsApp](#-configuración-de-whatsapp)
-- [📸 Capturas del flujo](#-capturas-del-flujo)
-  - [1. Recopilación de datos](#1-recopilación-de-datos)
-  - [2. Resumen de la tutoría](#2-resumen-de-la-tutoría)
-  - [](#)
-  - [3. Confirmación](#3-confirmación)
-  - [4. Reserva final](#4-reserva-final)
-- [🔄 Flujo de información](#-flujo-de-información)
-- [🧾 Estructura JSON](#-estructura-json)
-- [🔐 Validaciones del sistema](#-validaciones-del-sistema)
-    - [Materia](#materia)
-    - [Tutor](#tutor)
-    - [Horario](#horario)
-    - [Día](#día)
-    - [Datos personales](#datos-personales)
-    - [Confirmación](#confirmación)
-    - [Disponibilidad final](#disponibilidad-final)
-- [⚠️ Reglas importantes](#️-reglas-importantes)
-- [💬 Ejemplo de conversación](#-ejemplo-de-conversación)
-    - [Estudiante](#estudiante)
-    - [TutorBot](#tutorbot)
-    - [Estudiante](#estudiante-1)
-    - [TutorBot](#tutorbot-1)
-    - [Estudiante](#estudiante-2)
-    - [TutorBot](#tutorbot-2)
-- [👥 Integrantes](#-integrantes)
-- [📦 Entregables](#-entregables)
-- [📈 Estado del proyecto](#-estado-del-proyecto)
-- [🚀 CRECE](#-crece)
+- [Importación del flujo de n8n](#-importación-del-flujo-de-n8n)
+- [Configuración de Google Sheets](#-configuración-de-google-sheets)
+- [Configuración de WhatsApp](#-configuración-de-whatsapp)
+- [Capturas del flujo](#-capturas-del-flujo)
+- [Flujo de información](#-flujo-de-información)
+- [Estructura JSON](#-estructura-json)
+- [Validaciones del sistema](#-validaciones-del-sistema)
+- [Reglas importantes](#️-reglas-importantes)
+- [Ejemplo de conversación](#-ejemplo-de-conversación)
+- [Integrantes](#-integrantes)
+- [Entregables](#-entregables)
+- [Estado del proyecto](#-estado-del-proyecto)
+- [CRECE](#-crece)
 
 ---
 
@@ -76,16 +53,16 @@ El chatbot permite al estudiante consultar materias, seleccionar un día y horar
 
 **TutorBot CRECE** es un asistente virtual creado para automatizar el proceso de gestión de tutorías estudiantiles.
 
-El sistema permite que un estudiante pueda realizar su inscripción y agendamiento mediante una conversación sencilla desde WhatsApp.
+El sistema permite que un estudiante pueda realizar su inscripción y agendamiento mediante una conversación desde WhatsApp.
 
-El chatbot se encarga de consultar la información almacenada en Google Sheets para determinar:
+El chatbot consulta la información almacenada en Google Sheets para determinar:
 
-* Materias disponibles.
-* Tutores disponibles.
-* Estado de los tutores.
-* Horarios disponibles.
-* Disponibilidad entre semana.
-* Disponibilidad durante el fin de semana.
+- Materias disponibles
+- Tutores disponibles
+- Estado de los tutores
+- Horarios disponibles
+- Disponibilidad entre semana
+- Disponibilidad durante el fin de semana
 
 Después de seleccionar una tutoría, el estudiante proporciona sus datos y el sistema genera la información necesaria para registrar la reserva.
 
@@ -97,16 +74,16 @@ El objetivo principal del proyecto es **facilitar las gestiones de los estudiant
 
 El sistema busca:
 
-* Automatizar el proceso de inscripción.
-* Evitar registros manuales innecesarios.
-* Consultar disponibilidad en tiempo real desde la base de datos.
-* Evitar ofrecer horarios ocupados.
-* Validar los datos del estudiante.
-* Permitir confirmar una tutoría mediante WhatsApp.
-* Registrar automáticamente la información de la reserva.
-* Generar un ID único para cada estudiante.
-* Informar al estudiante sobre su tutoría.
-* Enviar un recordatorio antes de la clase.
+- Automatizar el proceso de inscripción
+- Evitar registros manuales innecesarios
+- Consultar disponibilidad en tiempo real desde la base de datos
+- Evitar ofrecer horarios ocupados
+- Validar los datos del estudiante
+- Permitir confirmar una tutoría mediante WhatsApp
+- Registrar automáticamente la información de la reserva
+- Generar un ID único para cada estudiante
+- Informar al estudiante sobre su tutoría
+- Enviar un recordatorio antes de la clase
 
 ---
 
@@ -190,8 +167,8 @@ El sistema consulta Google Sheets para obtener las materias que tienen tutores a
 
 Actualmente se manejan materias como:
 
-* Literatura
-* Programación
+- Literatura
+- Programación
 
 El chatbot no debe inventar materias.
 
@@ -203,8 +180,8 @@ Después de seleccionar la materia, el estudiante indica qué día desea recibir
 
 El sistema determina si corresponde a:
 
-* Día entre semana.
-* Fin de semana.
+- Día entre semana
+- Fin de semana
 
 La disponibilidad se obtiene de la base de datos.
 
@@ -235,9 +212,9 @@ Después de seleccionar la tutoría, el chatbot solicita únicamente los datos n
 
 ### Datos solicitados
 
-1. Nombre completo.
-2. Edad.
-3. Número de teléfono.
+1. Nombre completo
+2. Edad
+3. Número de teléfono
 
 Ejemplo:
 
@@ -294,12 +271,12 @@ El chatbot no registra una tutoría hasta recibir una confirmación explícita.
 
 Algunas respuestas válidas son:
 
-* Sí.
-* Confirmar.
-* Sí, confirmar.
-* Agendar.
-* Quiero esa.
-* Confirmo.
+- Sí
+- Confirmar
+- Sí, confirmar
+- Agendar
+- Quiero esa
+- Confirmo
 
 Si el estudiante decide no continuar, puede cancelar o modificar la información.
 
@@ -395,12 +372,12 @@ La tabla de disponibilidad contiene:
 
 | ID DISPONIBLE | ID TUTOR | HORARIO             | DISPONIBLE SEMANA | DISPONIBLE FIN DE SEMANA |
 | ------------- | -------- | ------------------- | ----------------- | ------------------------ |
-| 2001          | 1001     | 8:00 am a 10:00 am  | Disponible        |                          |
-| 2002          | 1002     | 12:00 pm a 2:00 pm  | Disponible        |                          |
-| 2003          | 1003     | 4:00 pm a 5:00 pm   | Disponible        |                          |
-| 2004          | 1004     | 10:00 am a 12:00 pm |                   | Disponible               |
-| 2005          | 1005     | 1:00 pm a 3:00 pm   |                   | Disponible               |
-| 2006          | 1006     | 4:00 pm a 6:00 pm   |                   | Disponible               |
+| 2001          | 1001     | 8:00 am a 10:00 am  | Disponible        |                        |
+| 2002          | 1002     | 12:00 pm a 2:00 pm  | Disponible        |                        |
+| 2003          | 1003     | 4:00 pm a 5:00 pm   | Disponible        |                        |
+| 2004          | 1004     | 10:00 am a 12:00 pm |                   | Disponible             |
+| 2005          | 1005     | 1:00 pm a 3:00 pm   |                   | Disponible             |
+| 2006          | 1006     | 4:00 pm a 6:00 pm   |                   | Disponible             |
 
 ---
 
@@ -483,9 +460,9 @@ Es necesario configurar las credenciales correspondientes a los servicios utiliz
 
 Principalmente:
 
-* Google Sheets.
-* WhatsApp.
-* Servicios utilizados por n8n.
+- Google Sheets
+- WhatsApp
+- Servicios utilizados por n8n
 
 Las credenciales privadas no deben incluirse dentro del repositorio de GitHub.
 
@@ -495,18 +472,13 @@ Las credenciales privadas no deben incluirse dentro del repositorio de GitHub.
 
 Para importar el flujo:
 
-1. Abrir n8n.
-2. Ir a la opción de importar workflow.
-3. Seleccionar:
-
-```text
-TutorBot_CRECE.json
-```
-
-4. Revisar los nodos.
-5. Configurar las credenciales.
-6. Verificar las conexiones con Google Sheets.
-7. Activar el workflow.
+1. Abrir n8n
+2. Ir a la opción de importar workflow
+3. Seleccionar `TutorBot_CRECE.json`
+4. Revisar los nodos
+5. Configurar las credenciales
+6. Verificar las conexiones con Google Sheets
+7. Activar el workflow
 
 ---
 
@@ -600,6 +572,7 @@ El sistema presenta los datos recopilados antes de solicitar la confirmación.
 
 ![Resumen de tutoría](op5.png)
 ![Resumen de tutoría](op4.png)
+
 ---
 
 ## 3. Confirmación
@@ -631,7 +604,7 @@ DATOS DEL ESTUDIANTE
         │
         ▼
 DATOS DE LA TUTORÍA
-│
+���
 ├── Materia
 ├── Tutor
 ├── Día
@@ -688,11 +661,7 @@ Debe existir en la base de datos.
 
 ### Tutor
 
-Debe encontrarse registrado y estar en estado:
-
-```text
-ACTIVO
-```
+Debe encontrarse registrado y estar en estado `ACTIVO`.
 
 ### Horario
 
@@ -706,9 +675,9 @@ Debe coincidir con el tipo de disponibilidad registrado.
 
 Deben estar completos:
 
-* Nombre.
-* Edad.
-* Teléfono.
+- Nombre
+- Edad
+- Teléfono
 
 ### Confirmación
 
@@ -724,16 +693,16 @@ El horario debe verificarse nuevamente antes de crear la reserva.
 
 El chatbot nunca debe:
 
-* Inventar materias.
-* Inventar tutores.
-* Inventar horarios.
-* Inventar IDs.
-* Mostrar tutores inactivos.
-* Mostrar horarios no disponibles.
-* Registrar una reserva sin confirmación.
-* Sobrescribir reservas existentes.
-* Solicitar información innecesaria.
-* Confirmar el envío de un SMS sin recibir confirmación del servicio.
+- Inventar materias
+- Inventar tutores
+- Inventar horarios
+- Inventar IDs
+- Mostrar tutores inactivos
+- Mostrar horarios no disponibles
+- Registrar una reserva sin confirmación
+- Sobrescribir reservas existentes
+- Solicitar información innecesaria
+- Confirmar el envío de un SMS sin recibir confirmación del servicio
 
 ---
 
@@ -835,20 +804,20 @@ Después de confirmar:
 
 El proyecto debe incluir:
 
-* [x] Repositorio de GitHub.
-* [x] Nombre del repositorio: `Proyecto_TutorBot_ApellidoNombre`.
-* [x] Archivo `README.md`.
-* [x] Instrucciones de instalación y configuración.
-* [x] Descripción del funcionamiento.
-* [x] Capturas del flujo.
-* [x] Archivo `.json` con el workflow completo de n8n.
-* [x] Base de datos en Google Sheets.
-* [x] Acceso compartido al Google Sheets.
-* [x] Flujo de inscripción.
-* [x] Validación de disponibilidad.
-* [x] Confirmación de reserva.
-* [x] Generación de ID de estudiante.
-* [x] Sistema de recordatorio.
+- [x] Repositorio de GitHub
+- [x] Nombre del repositorio: `Proyecto_TutorBot_ApellidoNombre`
+- [x] Archivo `README.md`
+- [x] Instrucciones de instalación y configuración
+- [x] Descripción del funcionamiento
+- [x] Capturas del flujo
+- [x] Archivo `.json` con el workflow completo de n8n
+- [x] Base de datos en Google Sheets
+- [x] Acceso compartido al Google Sheets
+- [x] Flujo de inscripción
+- [x] Validación de disponibilidad
+- [x] Confirmación de reserva
+- [x] Generación de ID de estudiante
+- [x] Sistema de recordatorio
 
 ---
 
@@ -871,5 +840,3 @@ Se continuará documentando el funcionamiento mediante capturas de pantalla y ac
 📚 Aprende con CRECE.
 🤖 Gestiona con TutorBot.
 🚀 ¡Tu tutoría a solo unos pasos!
-#   C h a t B o t _ L e Z u n i  
- 

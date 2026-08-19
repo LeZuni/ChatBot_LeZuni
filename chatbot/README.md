@@ -1,6 +1,6 @@
 # 🤖 TutorBot CRECE
 
-Asistente virtual estudiantil desarrollado con **n8n**, **WhatsApp** y **Google Sheets**, diseñado para facilitar y agilizar el proceso de inscripción y agendamiento de tutorías para los estudiantes.
+Asistente virtual estudiantil desarrollado con **n8n**, **Telegram** y **Google Sheets**, diseñado para facilitar y agilizar el proceso de inscripción y agendamiento de tutorías para los estudiantes.
 
 El chatbot permite al estudiante consultar materias, seleccionar un día y horario disponible, proporcionar sus datos personales, revisar la información de su tutoría y confirmar su reserva.
 
@@ -53,7 +53,7 @@ El chatbot permite al estudiante consultar materias, seleccionar un día y horar
 
 **TutorBot CRECE** es un asistente virtual creado para automatizar el proceso de gestión de tutorías estudiantiles.
 
-El sistema permite que un estudiante pueda realizar su inscripción y agendamiento mediante una conversación desde WhatsApp.
+El sistema permite que un estudiante pueda realizar su inscripción y agendamiento mediante una conversación desde telegram.
 
 El chatbot consulta la información almacenada en Google Sheets para determinar:
 

@@ -92,7 +92,7 @@ El sistema busca:
 | Tecnología         | Función                                     |
 | ------------------ | ------------------------------------------- |
 | **n8n**            | Automatización y control del flujo          |
-| **WhatsApp**       | Medio de comunicación con el estudiante     |
+| **Telegram**       | Medio de comunicación con el estudiante     |
 | **Google Sheets**  | Base de datos del proyecto                  |
 | **JSON**           | Intercambio y estructuración de información |
 | **Webhooks / API** | Comunicación entre los servicios            |
@@ -107,7 +107,7 @@ El funcionamiento del sistema puede representarse de la siguiente manera:
               👨‍🎓 ESTUDIANTE
                     │
                     ▼
-              📱 WHATSAPP
+              📱 Telegram
                     │
                     ▼
               ⚙️ n8n
@@ -157,7 +157,7 @@ El chatbot inicia la conversación identificándose como el asistente virtual de
 
 Ejemplo:
 
-> ¡Hola! 👩🏻‍💻 Soy Lesli, la asistente virtual de CRECE. Estoy aquí para ayudarte a encontrar y agendar una tutoría de forma rápida y sencilla. 😊
+> ¡Hola! 👩🏻‍💻 Soy Baymax, la asistente virtual de CRECE. Estoy aquí para ayudarte a encontrar y agendar una tutoría de forma rápida y sencilla. 😊
 
 ---
 

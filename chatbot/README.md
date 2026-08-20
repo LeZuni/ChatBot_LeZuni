@@ -840,3 +840,6 @@ Se continuará documentando el funcionamiento mediante capturas de pantalla y ac
 📚 Aprende con CRECE.
 🤖 Gestiona con TutorBot.
 🚀 ¡Tu tutoría a solo unos pasos!
+
+#Update: Examen 1 explicando la lógica implementada.
+🤖 Baymax analizara tus puntos acumulados y en la primera seccion podras verlo ,Baymax sabe de matematica y te ayudara 
